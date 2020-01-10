@@ -58,6 +58,8 @@ class Texture;
 class UploadBuffer;
 class VertexBuffer;
 
+
+
 class CommandList
 {
 public:
@@ -133,6 +135,11 @@ public:
     void CopyVertexBuffer( VertexBuffer& vertexBuffer, const std::vector<T>& vertexBufferData )
     {
         CopyVertexBuffer( vertexBuffer, vertexBufferData.size(), sizeof( T ), vertexBufferData.data() );
+    }
+
+    void CopyVertexBufferM(VertexBuffer & vertexBuffer, const void * vertexBufferData) 
+    {
+        CopyVertexBuffer(vertexBuffer, 8, sizeof(DWORD), vertexBufferData);
     }
 
     /**
@@ -224,7 +231,16 @@ public:
     void SetGraphics32BitConstants( uint32_t rootParameterIndex, const T& constants )
     {
         static_assert( sizeof( T ) % sizeof( uint32_t ) == 0, "Size of type must be a multiple of 4 bytes" );
-        SetGraphics32BitConstants( rootParameterIndex, sizeof( T ) / sizeof( uint32_t ), &constants );
+        int h = sizeof(T) / sizeof(uint32_t);
+        if (sizeof(T) / sizeof(uint32_t) == 64) 
+        {
+            SetGraphics32BitConstants(rootParameterIndex, 16, &constants);
+        }
+        else
+        {
+            SetGraphics32BitConstants(rootParameterIndex, sizeof(T) / sizeof(uint32_t), &constants);
+        }
+        
     }
 
     /**

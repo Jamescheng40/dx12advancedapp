@@ -370,14 +370,44 @@ std::unique_ptr<Mesh> Mesh::CreatePlane(CommandList& commandList, float width, f
 
 std::unique_ptr<Mesh> Mesh::CreateComplexCube(CommandList& commandList, float width, float height, bool rhcoords)
 {
-
+    // Vertex data for a colored cube.
+    struct VertexPosColorsm
+    {
+        XMFLOAT3 Position;
+        XMFLOAT3 Color;
+    };
     //rectangle cube definition testing version
-    
+    VertexPosColorsm g_Vertices[8] = {
+    { XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) }, // 0
+    { XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f) }, // 1
+    { XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f) }, // 2
+    { XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f) }, // 3
+    { XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, 0.0f, 1.0f) }, // 4
+    { XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f, 1.0f, 1.0f) }, // 5
+    { XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) }, // 6
+    { XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(1.0f, 0.0f, 1.0f) }  // 7
+    };
+
+    IndexCollection indices =
+    {
+        0, 1, 2, 0, 2, 3,
+        4, 6, 5, 4, 7, 6,
+        4, 5, 1, 4, 1, 0,
+        3, 2, 6, 3, 6, 7,
+        1, 5, 6, 1, 6, 2,
+        4, 0, 3, 4, 3, 7
+    };
+
+
+    std::unique_ptr<Mesh> mesh(new Mesh());
+
+    mesh->InitializeM(commandList, g_Vertices, indices, true);
 
 
 
 
-    return std::unique_ptr<Mesh>();
+
+    return mesh;
 }
 
 
@@ -408,4 +438,13 @@ void Mesh::Initialize(CommandList& commandList, VertexCollection& vertices, Inde
     commandList.CopyIndexBuffer(m_IndexBuffer, indices);
 
     m_IndexCount = static_cast<UINT>(indices.size());
+}
+
+void Mesh::InitializeM(CommandList& commandList, const void * vertices, IndexCollection& indices, bool rhcoords)
+{
+
+
+    commandList.CopyVertexBufferM(m_VertexBuffer, vertices);
+    commandList.CopyIndexBuffer(m_IndexBuffer, indices);
+
 }

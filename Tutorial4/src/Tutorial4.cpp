@@ -183,6 +183,8 @@ bool Tutorial4::LoadContent()
     // Create an inverted (reverse winding order) cube so the insides are not clipped.
     m_SkyboxMesh = Mesh::CreateCube(*commandList, 1.0f, true);
 
+    m_ComCube = Mesh::CreateComplexCube(*commandList);
+
     // Load some textures
     commandList->LoadTextureFromFile(m_DefaultTexture, L"Assets/Textures/DefaultWhite.bmp");
     commandList->LoadTextureFromFile(m_DirectXTexture, L"Assets/Textures/Directx9.png");
@@ -249,68 +251,7 @@ bool Tutorial4::LoadContent()
         featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
     }
 
-    // Creata a root signature and PSO for the MultiCube shaders
-    {
-        ComPtr<ID3DBlob> MulCbVS;
-        ThrowIfFailed(D3DReadFileToBlob(L"data/shaders/Tutorial4/MultiCube_VS.cso", &MulCbVS));
-        ComPtr<ID3DBlob> MulCbPS;
-        ThrowIfFailed(D3DReadFileToBlob(L"data/shaders/Tutorial4/MultiCube_PS.cso", &MulCbPS));
-
-        // Create the vertex input layout
-        D3D12_INPUT_ELEMENT_DESC inputLayoutMC[] = {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-            { "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-        };
-
-        // Allow input layout and deny unnecessary access to certain pipeline stages.
-        D3D12_ROOT_SIGNATURE_FLAGS rootSignatureFlagss =
-            D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
-            D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
-            D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
-            D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
-            D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS;
-
-
-        CD3DX12_ROOT_PARAMETER1 rootParameterss[1];
-        rootParameterss[0].InitAsConstants(sizeof(XMMATRIX) / 4, 0, 0, D3D12_SHADER_VISIBILITY_VERTEX);
-
-        CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDescriptionn;
-        rootSignatureDescriptionn.Init_1_1(_countof(rootParameterss), rootParameterss, 0,nullptr, rootSignatureFlagss);
-
-        m_MultiCubeSignature.SetRootSignatureDesc(rootSignatureDescriptionn.Desc_1_1, featureData.HighestVersion);
-
-        //setting up pipeline
-
-        struct MultiCubePipelineStateStream
-        {
-            CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE pRootSignature;
-            CD3DX12_PIPELINE_STATE_STREAM_INPUT_LAYOUT InputLayout;
-            CD3DX12_PIPELINE_STATE_STREAM_PRIMITIVE_TOPOLOGY PrimitiveTopologyType;
-            CD3DX12_PIPELINE_STATE_STREAM_VS VS;
-            CD3DX12_PIPELINE_STATE_STREAM_PS PS;
-            CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT DSVFormat;
-            CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS RTVFormats;
-        } pipelineStateStream;
-
-        D3D12_RT_FORMAT_ARRAY rtvFormats = {};
-        rtvFormats.NumRenderTargets = 1;
-        rtvFormats.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-
-        pipelineStateStream.pRootSignature = m_MultiCubeSignature.GetRootSignature().Get();
-        pipelineStateStream.InputLayout = { inputLayoutMC, _countof(inputLayoutMC) };
-        pipelineStateStream.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-        pipelineStateStream.VS = CD3DX12_SHADER_BYTECODE(MulCbVS.Get());
-        pipelineStateStream.PS = CD3DX12_SHADER_BYTECODE(MulCbPS.Get());
-        pipelineStateStream.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-        pipelineStateStream.RTVFormats = rtvFormats;
-
-        D3D12_PIPELINE_STATE_STREAM_DESC pipelineStateStreamDesc = {
-            sizeof(MultiCubePipelineStateStream), &pipelineStateStream
-        };
-        ThrowIfFailed(device->CreatePipelineState(&pipelineStateStreamDesc, IID_PPV_ARGS(&m_MultiCubePipelineState)));
-
-    }
-
+ 
 
 
     // Create a root signature and PSO for the skybox shaders.
@@ -371,7 +312,77 @@ bool Tutorial4::LoadContent()
         };
         ThrowIfFailed(device->CreatePipelineState(&skyboxPipelineStateStreamDesc, IID_PPV_ARGS(&m_SkyboxPipelineState)));
     }
+ 
+    // Creata a root signature and PSO for the MultiCube shaders
+    {
+        ComPtr<ID3DBlob> MulCbVS;
+        ThrowIfFailed(D3DReadFileToBlob(L"data/shaders/Tutorial4/MultiCube_VS.cso", &MulCbVS));
+        ComPtr<ID3DBlob> MulCbPS;
+        ThrowIfFailed(D3DReadFileToBlob(L"data/shaders/Tutorial4/MultiCube_PS.cso", &MulCbPS));
 
+        // Create the vertex input layout
+        D3D12_INPUT_ELEMENT_DESC inputLayoutMC[] = {
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+            { "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+        };
+
+        // Allow input layout and deny unnecessary access to certain pipeline stages.
+        D3D12_ROOT_SIGNATURE_FLAGS rootSignatureFlagss =
+            D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
+            D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
+            D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
+            D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
+            D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS;
+
+
+        //CD3DX12_ROOT_PARAMETER1 rootParameterss[1];
+        //rootParameterss[0].InitAsConstantBufferView(0, 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, D3D12_SHADER_VISIBILITY_VERTEX);
+        CD3DX12_DESCRIPTOR_RANGE1 descriptorRange(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 3);
+
+        CD3DX12_ROOT_PARAMETER1 rootParameterss[2];
+        rootParameterss[0].InitAsConstants(sizeof(DirectX::XMMATRIX) / 4, 0, 0, D3D12_SHADER_VISIBILITY_VERTEX);
+        rootParameterss[1].InitAsDescriptorTable(1, &descriptorRange, D3D12_SHADER_VISIBILITY_PIXEL);
+
+
+
+        CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDescriptionn;
+        rootSignatureDescriptionn.Init_1_1(_countof(rootParameterss), rootParameterss, 0, nullptr, rootSignatureFlagss);
+
+        m_MultiCubeSignature.SetRootSignatureDesc(rootSignatureDescriptionn.Desc_1_1, featureData.HighestVersion);
+
+        //setting up pipeline
+
+        struct MultiCubePipelineStateStream
+        {
+            CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE pRootSignature;
+            CD3DX12_PIPELINE_STATE_STREAM_INPUT_LAYOUT InputLayout;
+            CD3DX12_PIPELINE_STATE_STREAM_PRIMITIVE_TOPOLOGY PrimitiveTopologyType;
+            CD3DX12_PIPELINE_STATE_STREAM_VS VS;
+            CD3DX12_PIPELINE_STATE_STREAM_PS PS;
+            CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT DSVFormat;
+            CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS RTVFormats;
+            CD3DX12_PIPELINE_STATE_STREAM_SAMPLE_DESC SampleDesc;
+        } pipelineStateStream;
+
+        D3D12_RT_FORMAT_ARRAY rtvFormats = {};
+        rtvFormats.NumRenderTargets = 1;
+        rtvFormats.RTFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+        pipelineStateStream.pRootSignature = m_MultiCubeSignature.GetRootSignature().Get();
+        pipelineStateStream.InputLayout = { inputLayoutMC, _countof(inputLayoutMC) };
+        pipelineStateStream.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+        pipelineStateStream.VS = CD3DX12_SHADER_BYTECODE(MulCbVS.Get());
+        pipelineStateStream.PS = CD3DX12_SHADER_BYTECODE(MulCbPS.Get());
+        pipelineStateStream.DSVFormat = DXGI_FORMAT_D32_FLOAT;
+        pipelineStateStream.RTVFormats = m_HDRRenderTarget.GetRenderTargetFormats();
+        pipelineStateStream.SampleDesc = sampleDesc;
+
+        D3D12_PIPELINE_STATE_STREAM_DESC pipelineStateStreamDesc = {
+            sizeof(MultiCubePipelineStateStream), &pipelineStateStream
+        };
+        ThrowIfFailed(device->CreatePipelineState(&pipelineStateStreamDesc, IID_PPV_ARGS(&m_MultiCubePipelineState)));
+
+    }
 
 
     // Create a root signature for the HDR pipeline.
@@ -479,6 +490,8 @@ bool Tutorial4::LoadContent()
         };
         ThrowIfFailed(device->CreatePipelineState(&sdrPipelineStateStreamDesc, IID_PPV_ARGS(&m_SDRPipelineState)));
     }
+
+   
 
     auto fenceValue = commandQueue->ExecuteCommandList(commandList);
     commandQueue->WaitForFenceValue(fenceValue);
@@ -815,18 +828,23 @@ void Tutorial4::OnRender(RenderEventArgs& e)
 
     //render my MultiCube 
     {
+        commandList->SetPipelineState(m_MultiCubePipelineState);
+        commandList->SetGraphicsRootSignature(m_MultiCubeSignature);
 
-        //XMMATRIX translationMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-        //XMMATRIX rotationMatrix = XMMatrixIdentity();
-        //XMMATRIX scaleMatrix = XMMatrixScaling(0.0f, 0.0f, 0.0f);
+        auto translationMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+        auto rotationMatrix = XMMatrixIdentity();
+        auto scaleMatrix = XMMatrixScaling(0.0f, 0.0f, 0.0f);
 
-        //XMMATRIX worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
-        //XMMATRIX viewMatrix = m_Camera.get_ViewMatrix();
-        //XMMATRIX viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
+        auto worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+        auto viewMatrix = m_Camera.get_ViewMatrix();
+        auto viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
+        uint16_t i = sizeof(XMMATRIX) / 4;
+        Mat matrices;
+        ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
 
-        //Mat matrices;
-        //ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
+        commandList->SetGraphics32BitConstants(0,matrices);
 
+        m_ComCube->Draw(*commandList);
 
     }
 
@@ -859,19 +877,19 @@ void Tutorial4::OnRender(RenderEventArgs& e)
 
     m_SphereMesh->Draw(*commandList);
 
-    // Draw a cube
-    translationMatrix = XMMatrixTranslation(4.0f, 4.0f, 4.0f);
-    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(45.0f));
-    scaleMatrix = XMMatrixScaling(4.0f, 8.0f, 4.0f);
-    worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+    //// Draw a cube
+    //translationMatrix = XMMatrixTranslation(4.0f, 4.0f, 4.0f);
+    //rotationMatrix = XMMatrixRotationY(XMConvertToRadians(45.0f));
+    //scaleMatrix = XMMatrixScaling(4.0f, 8.0f, 4.0f);
+    //worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
 
-    ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
+    //ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
 
-    commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MatricesCB, matrices);
-    commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MaterialCB, Material::White);
-    commandList->SetShaderResourceView(RootParameters::Textures, 0, m_MonaLisaTexture, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+    //commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MatricesCB, matrices);
+    //commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MaterialCB, Material::White);
+    //commandList->SetShaderResourceView(RootParameters::Textures, 0, m_MonaLisaTexture, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
-    m_CubeMesh->Draw(*commandList);
+    //m_CubeMesh->Draw(*commandList);
 
     // Draw a torus
     translationMatrix = XMMatrixTranslation(4.0f, 0.6f, -4.0f);

@@ -41,6 +41,9 @@
 #include <memory> // For std::unique_ptr
 #include <vector>
 
+
+
+
  // Vertex struct holding position, normal vector, and texture mapping information.
 struct VertexPositionNormalTexture
 {
@@ -96,6 +99,8 @@ private:
     virtual ~Mesh();
 
     void Initialize(CommandList& commandList, VertexCollection& vertices, IndexCollection& indices, bool rhcoords);
+
+    void InitializeM(CommandList& commandList, const void * vertices, IndexCollection& indices, bool rhcoords);
 
     VertexBuffer m_VertexBuffer;
     IndexBuffer m_IndexBuffer;

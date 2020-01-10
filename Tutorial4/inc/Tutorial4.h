@@ -105,6 +105,7 @@ private:
     std::unique_ptr<Mesh> m_PlaneMesh;
 
     std::unique_ptr<Mesh> m_SkyboxMesh;
+    std::unique_ptr<Mesh> m_ComCube;
 
     Texture m_DefaultTexture;
     Texture m_DirectXTexture;
