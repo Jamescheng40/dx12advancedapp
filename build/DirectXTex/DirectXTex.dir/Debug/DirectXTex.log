@@ -1,0 +1,23 @@
+﻿  Building Custom Rule C:/wtfhappen/DirectXTex/CMakeLists.txt
+  DirectXTexWIC.cpp
+  BC.cpp
+  BC4BC5.cpp
+  BC6HBC7.cpp
+  BCDirectCompute.cpp
+  DirectXTexCompress.cpp
+  DirectXTexCompressGPU.cpp
+  DirectXTexConvert.cpp
+  DirectXTexD3D11.cpp
+  DirectXTexD3D12.cpp
+  DirectXTexDDS.cpp
+  DirectXTexFlipRotate.cpp
+  DirectXTexHDR.cpp
+  DirectXTexImage.cpp
+  DirectXTexMipmaps.cpp
+  DirectXTexMisc.cpp
+  DirectXTexNormalMaps.cpp
+  DirectXTexPMAlpha.cpp
+  DirectXTexResize.cpp
+  DirectXTexTGA.cpp
+  DirectXTexUtil.cpp
+  DirectXTex.vcxproj -> C:\wtfhappen\build\lib\Debug\DirectXTex.lib

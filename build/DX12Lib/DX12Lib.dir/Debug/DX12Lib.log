@@ -1,0 +1,8 @@
+﻿  CommandList.cpp
+  CommandQueue.cpp
+  DynamicDescriptorHeap.cpp
+  GUI.cpp
+  Mesh.cpp
+  ResourceStateTracker.cpp
+  Window.cpp
+  DX12Lib.vcxproj -> C:\wtfhappen\build\lib\Debug\DX12Lib.lib

@@ -1,0 +1,10 @@
+^C:\WTFHAPPEN\BUILD\CMAKEFILES\A49ACDEADD3DAB2BA80B372E228BD5E3\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/wtfhappen -BC:/wtfhappen/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/wtfhappen/build/LearningDirectX12.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\wtfhappen\Tutorial3\src\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\wtfhappen\Tutorial3\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\wtfhappen\Tutorial3\src\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\wtfhappen\Tutorial3\src\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\wtfhappen\Tutorial3\src\Tutorial3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\wtfhappen\Tutorial3\inc\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\wtfhappen\Tutorial3\inc\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\wtfhappen\Tutorial3\inc\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\wtfhappen\Tutorial3\inc\Tutorial3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\wtfhappen\Tutorial3\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FXCompile Include="C:\wtfhappen\Tutorial3\shaders\VertexShader.hlsl">
+      <Filter>Resources\Shaders</Filter>
+    </FXCompile>
+    <FXCompile Include="C:\wtfhappen\Tutorial3\shaders\PixelShader.hlsl">
+      <Filter>Resources\Shaders</Filter>
+    </FXCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{AEBF7294-C630-322D-861B-1910EDF8E18D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{45B8BED6-596A-3EB0-A9FC-4EE2B57CB9BD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders">
+      <UniqueIdentifier>{EE5B3DE6-A794-33FF-942D-F022D0DB182F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D1952479-B3F9-34C4-9CA1-FACADB9BB039}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

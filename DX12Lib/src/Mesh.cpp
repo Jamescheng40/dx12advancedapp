@@ -388,6 +388,17 @@ std::unique_ptr<Mesh> Mesh::CreateComplexCube(CommandList& commandList, float wi
     { XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(1.0f, 0.0f, 1.0f) }  // 7
     };
 
+    VertexCollection g_Verticess = {
+    { XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) , XMFLOAT2(0.0f, 0.0f)}, // 0
+    { XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f) , XMFLOAT2(0.0f, 0.0f)}, // 1
+    { XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT2(0.0f, 0.0f) }, // 2
+    { XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f) , XMFLOAT2(0.0f, 0.0f)}, // 3
+    { XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, 0.0f, 1.0f) , XMFLOAT2(0.0f, 0.0f)}, // 4
+    { XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f, 1.0f, 1.0f) , XMFLOAT2(0.0f, 0.0f)}, // 5
+    { XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) , XMFLOAT2(0.0f, 0.0f)}, // 6
+    { XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(1.0f, 0.0f, 1.0f) , XMFLOAT2(0.0f, 0.0f)}  // 7
+    };
+
     IndexCollection indices =
     {
         0, 1, 2, 0, 2, 3,
@@ -401,10 +412,10 @@ std::unique_ptr<Mesh> Mesh::CreateComplexCube(CommandList& commandList, float wi
 
     std::unique_ptr<Mesh> mesh(new Mesh());
 
-    mesh->InitializeM(commandList, g_Vertices, indices, true);
+    mesh->InitializeM(commandList, _countof(g_Vertices), sizeof(VertexPosColorsm),g_Vertices, indices, true);
 
 
-
+    //mesh->Initialize(commandList, g_Verticess, indices, true);
 
 
     return mesh;
@@ -440,11 +451,33 @@ void Mesh::Initialize(CommandList& commandList, VertexCollection& vertices, Inde
     m_IndexCount = static_cast<UINT>(indices.size());
 }
 
-void Mesh::InitializeM(CommandList& commandList, const void * vertices, IndexCollection& indices, bool rhcoords)
+void Mesh::InitializeM(CommandList& commandList, size_t arrsize,size_t structsize,const void * vertices, IndexCollection& indices, bool rhcoords)
 {
 
 
-    commandList.CopyVertexBufferM(m_VertexBuffer, vertices);
+    commandList.CopyVertexBufferM(m_VertexBuffer,arrsize,structsize, vertices);
     commandList.CopyIndexBuffer(m_IndexBuffer, indices);
+    m_IndexCount = static_cast<UINT>(indices.size());
+}
 
+void Mesh::IndexGen(IndexCollection* indices, uint16_t range, uint16_t ranrng)
+{
+
+    for (int i = 0; i < range; ++i)
+
+
+
+    {
+
+
+
+        indices->push_back(rand() % ranrng);
+
+
+
+
+
+
+
+    }
 }

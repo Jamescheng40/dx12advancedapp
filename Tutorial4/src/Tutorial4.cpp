@@ -831,18 +831,44 @@ void Tutorial4::OnRender(RenderEventArgs& e)
         commandList->SetPipelineState(m_MultiCubePipelineState);
         commandList->SetGraphicsRootSignature(m_MultiCubeSignature);
 
-        auto translationMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+        float angle = static_cast<float>((e.TotalTime) * 90.0);
+
+
+
+        const XMVECTOR rotationAxis = XMVectorSet(10, 10, 10, 0);
+
+
+
+        m_ModelMatrix = XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(angle));
+
+        /*  auto translationMatrix = XMMatrixTranslation(-1.0f, 0.0f, 0.0f);
         auto rotationMatrix = XMMatrixIdentity();
-        auto scaleMatrix = XMMatrixScaling(0.0f, 0.0f, 0.0f);
+          auto scaleMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);*/
+          //auto worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
 
-        auto worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
         auto viewMatrix = m_Camera.get_ViewMatrix();
-        auto viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
-        uint16_t i = sizeof(XMMATRIX) / 4;
-        Mat matrices;
-        ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
 
-        commandList->SetGraphics32BitConstants(0,matrices);
+
+
+        auto viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
+        auto mat = m_ModelMatrix * viewProjectionMatrix;
+
+
+
+
+        auto rotationMatrix = XMMatrixIdentity();
+
+
+        //auto worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+        //auto viewMatrix = m_Camera.get_ViewMatrix();
+        //auto viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
+        //uint16_t i = sizeof(XMMATRIX) / 4;
+        //Mat matrices;
+        //ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
+
+
+         commandList->SetGraphics32BitConstants(0, mat);
+        //commandList->SetGraphics32BitConstants(0,matrices);
 
         m_ComCube->Draw(*commandList);
 

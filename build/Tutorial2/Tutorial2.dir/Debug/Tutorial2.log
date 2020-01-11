@@ -1,0 +1,11 @@
+﻿  Building Custom Rule C:/wtfhappen/Tutorial2/CMakeLists.txt
+  compilation object save succeeded; see C:\wtfhappen\build\bin\Debug\VertexShader.cso
+  compilation object save succeeded; see C:\wtfhappen\build\bin\Debug\PixelShader.cso
+  Application.cpp
+  CommandQueue.cpp
+  Game.cpp
+  HighResolutionClock.cpp
+  main.cpp
+  Tutorial2.cpp
+  Window.cpp
+  Tutorial2.vcxproj -> C:\wtfhappen\build\bin\Debug\Tutorial2.exe
