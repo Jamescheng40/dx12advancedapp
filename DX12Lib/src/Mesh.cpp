@@ -380,11 +380,11 @@ std::unique_ptr<Mesh> Mesh::CreateComplexCube(CommandList& commandList, float wi
     VertexPosColorsm g_Vertices[8] = {
     { XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f) }, // 0
     { XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f, 1.0f, 0.0f) }, // 1
-    { XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f)}, // 2
+    { XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(1.0f, 1.0f, 0.0f) }, // 2
     { XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(1.0f, 0.0f, 0.0f) }, // 3
     { XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, 0.0f, 1.0f) }, // 4
-    { XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f, 1.0f, 1.0f)}, // 5
-    { XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(1.0f, 1.0f, 1.0f)}, // 6
+    { XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f, 1.0f, 1.0f) }, // 5
+    { XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(1.0f, 1.0f, 1.0f) }, // 6
     { XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(1.0f, 0.0f, 1.0f) }  // 7
     };
 
@@ -397,13 +397,9 @@ std::unique_ptr<Mesh> Mesh::CreateComplexCube(CommandList& commandList, float wi
         1, 5, 6, 1, 6, 2,
         4, 0, 3, 4, 3, 7
     };
-    //IndexCollection indices;
+
 
     std::unique_ptr<Mesh> mesh(new Mesh());
-
-
-    //mesh->IndexGen(&indices,  , 8); //0.28mb/ 1.4mb 1gb
-
 
     mesh->InitializeM(commandList, g_Vertices, indices, true);
 
@@ -450,15 +446,5 @@ void Mesh::InitializeM(CommandList& commandList, const void * vertices, IndexCol
 
     commandList.CopyVertexBufferM(m_VertexBuffer, vertices);
     commandList.CopyIndexBuffer(m_IndexBuffer, indices);
-    m_IndexCount = static_cast<UINT>(indices.size());
-}
-
-void Mesh::IndexGen(IndexCollection* indices, uint16_t range, uint16_t ranrng)
-{
-    for (int i = 0; i < range; ++i)
-    {
-        indices->push_back(rand() % ranrng);
-
-    }
 
 }

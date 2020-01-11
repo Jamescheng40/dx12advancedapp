@@ -97,8 +97,6 @@ protected:
     virtual void OnResize(ResizeEventArgs& e) override; 
 
 private:
-    DirectX::XMMATRIX m_ModelMatrix;
-
     // Some geometry to render.
     std::unique_ptr<Mesh> m_CubeMesh;
     std::unique_ptr<Mesh> m_SphereMesh;
