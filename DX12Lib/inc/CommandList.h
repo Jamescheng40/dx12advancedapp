@@ -137,9 +137,9 @@ public:
         CopyVertexBuffer( vertexBuffer, vertexBufferData.size(), sizeof( T ), vertexBufferData.data() );
     }
 
-    void CopyVertexBufferM(VertexBuffer & vertexBuffer, size_t arrsize, size_t structsize,const void * vertexBufferData) 
+    void CopyVertexBufferM(VertexBuffer & vertexBuffer, const void * vertexBufferData) 
     {
-        CopyVertexBuffer(vertexBuffer, arrsize, structsize, vertexBufferData);
+        CopyVertexBuffer(vertexBuffer, 8, sizeof(DWORD), vertexBufferData);
     }
 
     /**

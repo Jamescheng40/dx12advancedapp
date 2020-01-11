@@ -100,7 +100,7 @@ private:
 
     void Initialize(CommandList& commandList, VertexCollection& vertices, IndexCollection& indices, bool rhcoords);
 
-    void InitializeM(CommandList& commandList, size_t arrsize, size_t structsize,const void * vertices, IndexCollection& indices, bool rhcoords);
+    void InitializeM(CommandList& commandList, const void * vertices, IndexCollection& indices, bool rhcoords);
 
     void IndexGen(IndexCollection* indices, uint16_t range, uint16_t ranrng);
 
