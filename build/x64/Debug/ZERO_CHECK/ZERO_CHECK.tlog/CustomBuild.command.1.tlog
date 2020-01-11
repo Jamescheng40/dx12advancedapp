@@ -1,0 +1,10 @@
+^C:\FIXUPDX12\BUILD\CMAKEFILES\5CEFAB8D0517EB2B11173AD957383348\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/fixupdx12 -BC:/fixupdx12/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/fixupdx12/build/LearningDirectX12.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

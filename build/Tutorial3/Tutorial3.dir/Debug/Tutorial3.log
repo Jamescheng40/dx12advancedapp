@@ -1,0 +1,9 @@
+﻿  Building Custom Rule C:/fixupdx12/Tutorial3/CMakeLists.txt
+  compilation object save succeeded; see C:\fixupdx12\Data\Shaders\Tutorial3\VertexShader.cso
+  compilation object save succeeded; see C:\fixupdx12\Data\Shaders\Tutorial3\PixelShader.cso
+  Camera.cpp
+  main.cpp
+  Light.cpp
+  Material.cpp
+  Tutorial3.cpp
+  Tutorial3.vcxproj -> C:\fixupdx12\build\bin\Debug\Tutorial3.exe

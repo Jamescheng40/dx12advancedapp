@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\fixupdx12\Tutorial3\src\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\fixupdx12\Tutorial3\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\fixupdx12\Tutorial3\src\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\fixupdx12\Tutorial3\src\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\fixupdx12\Tutorial3\src\Tutorial3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\fixupdx12\Tutorial3\inc\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\fixupdx12\Tutorial3\inc\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\fixupdx12\Tutorial3\inc\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\fixupdx12\Tutorial3\inc\Tutorial3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\fixupdx12\Tutorial3\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FXCompile Include="C:\fixupdx12\Tutorial3\shaders\VertexShader.hlsl">
+      <Filter>Resources\Shaders</Filter>
+    </FXCompile>
+    <FXCompile Include="C:\fixupdx12\Tutorial3\shaders\PixelShader.hlsl">
+      <Filter>Resources\Shaders</Filter>
+    </FXCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{29B2C8CB-E160-3D21-86F7-846A250810DB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{80922AEC-3E2B-30A6-BB8F-4007DF01AD7E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders">
+      <UniqueIdentifier>{DE374B48-A69C-38D3-94D1-E5852BED7869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{48807A6B-F583-38DC-8839-FCCD884098AE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

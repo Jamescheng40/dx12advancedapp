@@ -1,0 +1,10 @@
+^C:\FIXUPDX12\TUTORIAL2\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/fixupdx12 -BC:/fixupdx12/build --check-stamp-file C:/fixupdx12/build/Tutorial2/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
