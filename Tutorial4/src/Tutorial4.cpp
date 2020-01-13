@@ -830,46 +830,26 @@ void Tutorial4::OnRender(RenderEventArgs& e)
     {
         commandList->SetPipelineState(m_MultiCubePipelineState);
         commandList->SetGraphicsRootSignature(m_MultiCubeSignature);
-
         float angle = static_cast<float>((e.TotalTime) * 90.0);
-
-
-
-        const XMVECTOR rotationAxis = XMVectorSet(10, 10, 10, 0);
-
-
-
+        const XMVECTOR rotationAxis = XMVectorSet(0.0f, 1.0f, 1.0f, 0.0f);
         m_ModelMatrix = XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(angle));
-
+        auto translationMatrix = XMMatrixTranslation(0.0f, 3.0f, 0.0f);
         /*  auto translationMatrix = XMMatrixTranslation(-1.0f, 0.0f, 0.0f);
         auto rotationMatrix = XMMatrixIdentity();
           auto scaleMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);*/
-          //auto worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
-
+          auto worldMatrix =  m_ModelMatrix  * translationMatrix;
         auto viewMatrix = m_Camera.get_ViewMatrix();
-
-
-
         auto viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
-        auto mat = m_ModelMatrix * viewProjectionMatrix;
-
-
-
-
+        auto mat =  worldMatrix * viewProjectionMatrix;
         auto rotationMatrix = XMMatrixIdentity();
-
-
         //auto worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
         //auto viewMatrix = m_Camera.get_ViewMatrix();
         //auto viewProjectionMatrix = viewMatrix * m_Camera.get_ProjectionMatrix();
         //uint16_t i = sizeof(XMMATRIX) / 4;
         //Mat matrices;
         //ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
-
-
          commandList->SetGraphics32BitConstants(0, mat);
         //commandList->SetGraphics32BitConstants(0,matrices);
-
         m_ComCube->Draw(*commandList);
 
     }
@@ -903,19 +883,19 @@ void Tutorial4::OnRender(RenderEventArgs& e)
 
     m_SphereMesh->Draw(*commandList);
 
-    //// Draw a cube
-    //translationMatrix = XMMatrixTranslation(4.0f, 4.0f, 4.0f);
-    //rotationMatrix = XMMatrixRotationY(XMConvertToRadians(45.0f));
-    //scaleMatrix = XMMatrixScaling(4.0f, 8.0f, 4.0f);
-    //worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+    // Draw a cube
+    translationMatrix = XMMatrixTranslation(4.0f, 4.0f, 4.0f);
+    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(45.0f));
+    scaleMatrix = XMMatrixScaling(4.0f, 8.0f, 4.0f);
+    worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
 
-    //ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
+    ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
 
-    //commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MatricesCB, matrices);
-    //commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MaterialCB, Material::White);
-    //commandList->SetShaderResourceView(RootParameters::Textures, 0, m_MonaLisaTexture, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+    commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MatricesCB, matrices);
+    commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MaterialCB, Material::White);
+    commandList->SetShaderResourceView(RootParameters::Textures, 0, m_MonaLisaTexture, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
-    //m_CubeMesh->Draw(*commandList);
+    m_CubeMesh->Draw(*commandList);
 
     // Draw a torus
     translationMatrix = XMMatrixTranslation(4.0f, 0.6f, -4.0f);
