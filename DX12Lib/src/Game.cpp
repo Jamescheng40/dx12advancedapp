@@ -28,6 +28,7 @@ bool Game::Initialize()
 
     m_pWindow = Application::Get().CreateRenderWindow(m_Name, m_Width, m_Height, m_vSync);
     m_pWindow->RegisterCallbacks(shared_from_this());
+    ::ShowWindow(m_pWindow->m_hWnd, SW_SHOW);
     m_pWindow->Show();
 
     return true;

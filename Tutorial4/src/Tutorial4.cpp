@@ -183,7 +183,11 @@ bool Tutorial4::LoadContent()
     // Create an inverted (reverse winding order) cube so the insides are not clipped.
     m_SkyboxMesh = Mesh::CreateCube(*commandList, 1.0f, true);
 
+    
+    //for performance only
     m_ComCube = Mesh::CreateComplexCube(*commandList);
+    m_SphereMesh1 = Mesh::CreateCube(*commandList);
+
 
     // Load some textures
     commandList->LoadTextureFromFile(m_DefaultTexture, L"Assets/Textures/DefaultWhite.bmp");
@@ -191,6 +195,7 @@ bool Tutorial4::LoadContent()
     commandList->LoadTextureFromFile(m_EarthTexture, L"Assets/Textures/earth.dds");
     commandList->LoadTextureFromFile(m_MonaLisaTexture, L"Assets/Textures/Mona_Lisa.jpg");
     commandList->LoadTextureFromFile(m_GraceCathedralTexture, L"Assets/Textures/grace-new.hdr");
+    commandList->LoadTextureFromFile(m_DonaldJtrump, L"Assets/Textures/donaldjtrump.jpg");
 
     // Create a cubemap for the HDR panorama.
     auto cubemapDesc = m_GraceCathedralTexture.GetD3D12ResourceDesc();
@@ -825,12 +830,12 @@ void Tutorial4::OnRender(RenderEventArgs& e)
         m_SkyboxMesh->Draw(*commandList);
     }
 
-
+    float angle = static_cast<float>((e.TotalTime) * 90.0);
     //render my MultiCube 
     {
         commandList->SetPipelineState(m_MultiCubePipelineState);
         commandList->SetGraphicsRootSignature(m_MultiCubeSignature);
-        float angle = static_cast<float>((e.TotalTime) * 90.0);
+        
         const XMVECTOR rotationAxis = XMVectorSet(0.0f, 1.0f, 1.0f, 0.0f);
         m_ModelMatrix = XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(angle));
         auto translationMatrix = XMMatrixTranslation(0.0f, 3.0f, 0.0f);
@@ -851,6 +856,8 @@ void Tutorial4::OnRender(RenderEventArgs& e)
          commandList->SetGraphics32BitConstants(0, mat);
         //commandList->SetGraphics32BitConstants(0,matrices);
         m_ComCube->Draw(*commandList);
+
+        
 
     }
 
@@ -885,7 +892,7 @@ void Tutorial4::OnRender(RenderEventArgs& e)
 
     // Draw a cube
     translationMatrix = XMMatrixTranslation(4.0f, 4.0f, 4.0f);
-    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(45.0f));
+    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(angle));
     scaleMatrix = XMMatrixScaling(4.0f, 8.0f, 4.0f);
     worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
 
@@ -897,9 +904,23 @@ void Tutorial4::OnRender(RenderEventArgs& e)
 
     m_CubeMesh->Draw(*commandList);
 
+    // Draw a cube2
+    translationMatrix = XMMatrixTranslation(-3.0f, 4.0f, 3.0f);
+    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(angle));
+    scaleMatrix = XMMatrixScaling(4.0f, 8.0f, 4.0f);
+    worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+
+    ComputeMatrices(worldMatrix, viewMatrix, viewProjectionMatrix, matrices);
+
+    commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MatricesCB, matrices);
+    commandList->SetGraphicsDynamicConstantBuffer(RootParameters::MaterialCB, Material::White);
+    commandList->SetShaderResourceView(RootParameters::Textures, 0, m_DonaldJtrump, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+
+    m_CubeMesh->Draw(*commandList);
+
     // Draw a torus
     translationMatrix = XMMatrixTranslation(4.0f, 0.6f, -4.0f);
-    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(45.0f));
+    rotationMatrix = XMMatrixRotationY(XMConvertToRadians(angle));
     scaleMatrix = XMMatrixScaling(4.0f, 4.0f, 4.0f);
     worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
 

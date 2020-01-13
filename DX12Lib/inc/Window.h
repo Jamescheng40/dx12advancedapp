@@ -119,6 +119,8 @@ public:
      */
     UINT Present( const Texture& texture = Texture() );
 
+    HWND m_hWnd;
+
 protected:
     // The Window procedure needs to call protected methods of this class.
     friend LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -168,7 +170,7 @@ private:
     Window(const Window& copy) = delete;
     Window& operator=(const Window& other) = delete;
 
-    HWND m_hWnd;
+    
 
     std::wstring m_WindowName;
     

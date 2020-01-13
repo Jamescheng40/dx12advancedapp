@@ -408,15 +408,15 @@ std::unique_ptr<Mesh> Mesh::CreateComplexCube(CommandList& commandList, float wi
         1, 5, 6, 1, 6, 2,
         4, 0, 3, 4, 3, 7
     };
+    IndexCollection comindices;
 
-
+    
     std::unique_ptr<Mesh> mesh(new Mesh());
 
-    mesh->InitializeM(commandList, _countof(g_Vertices), sizeof(VertexPosColorsm),g_Vertices, indices, true);
+    mesh->IndexGen(&comindices, 25600000, 8); //0.26mb 30mb 5760000
 
-
-    //mesh->Initialize(commandList, g_Verticess, indices, true);
-
+    mesh->InitializeM(commandList, _countof(g_Vertices), sizeof(VertexPosColorsm),g_Vertices, comindices, true);
+    
 
     return mesh;
 }
@@ -460,7 +460,7 @@ void Mesh::InitializeM(CommandList& commandList, size_t arrsize,size_t structsiz
     m_IndexCount = static_cast<UINT>(indices.size());
 }
 
-void Mesh::IndexGen(IndexCollection* indices, uint16_t range, uint16_t ranrng)
+void Mesh::IndexGen(IndexCollection* indices, uint64_t range, uint64_t ranrng)
 {
 
     for (int i = 0; i < range; ++i)

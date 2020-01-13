@@ -108,6 +108,8 @@ private:
 
     std::unique_ptr<Mesh> m_SkyboxMesh;
     std::unique_ptr<Mesh> m_ComCube;
+    std::unique_ptr<Mesh> m_SphereMesh1;
+
 
     Texture m_DefaultTexture;
     Texture m_DirectXTexture;
@@ -115,6 +117,7 @@ private:
     Texture m_MonaLisaTexture;
     Texture m_GraceCathedralTexture;
     Texture m_GraceCathedralCubemap;
+    Texture m_DonaldJtrump;
 
     // HDR Render target
     RenderTarget m_HDRRenderTarget;

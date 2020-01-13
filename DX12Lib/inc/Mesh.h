@@ -102,7 +102,7 @@ private:
 
     void InitializeM(CommandList& commandList,size_t arrsize,size_t structsize, const void * vertices, IndexCollection& indices, bool rhcoords);
 
-    void IndexGen(IndexCollection* indices, uint16_t range, uint16_t ranrng);
+    void IndexGen(IndexCollection* indices, uint64_t range, uint64_t ranrng);
 
     VertexBuffer m_VertexBuffer;
     IndexBuffer m_IndexBuffer;
